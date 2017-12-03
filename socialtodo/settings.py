@@ -25,7 +25,7 @@ SECRET_KEY = 'r456#0--zw0+r2c8l-k)1#zafr4xlh(-4l6d)8e@%y5qrreb86'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['ihrca.info','104.131.85.168','0.0.0.0']
 
 
 # Application definition
