@@ -25,7 +25,7 @@ SECRET_KEY = os.environ.get('SOCIAL_SECRET_KEY','r456#0--zw0+r2c8l-k)1#zafr4xlh(
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = bool(os.environ.get('SOCIAL_DEBUG', True))
 
-ALLOWED_HOSTS = ['ihrca.info','104.131.85.168','0.0.0.0','127.0.0.1','localhost']
+ALLOWED_HOSTS = ['ihrca.info','104.131.85.168','0.0.0.0','127.0.0.1','localhost','192.168.0.4']
 
 
 # Application definition
