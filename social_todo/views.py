@@ -15,18 +15,21 @@ from django.shortcuts import render
 def i_am_a_teapot_test(request):
     return JsonResponse({"message": "ERROR 418: I'm sorry sir, but a poor little teapot like me is no use to you"}, status= 418)
 
+
 @csrf_exempt
 def log_in_user(request):
     result = json.loads(request.body)
-    print(os.environ["SOCIAL_TODO_APP_ID"])
-    print(os.environ["SOCIAL_TODO_APP_SECRET"])
-    facebook_graph_response = requests.get("https://graph.facebook.com/debug_token", \
-                                           data = {"input_token": result["Token"], \
-                                                   "access_token": os.environ["SOCIAL_TODO_APP_ID"] \
-                                                                   + "|" \
-                                                                   + os.environ["SOCIAL_TODO_APP_SECRET"]})
-    print(facebook_graph_response)
-    print(result)
-    print(len(result["Token"]))
-    print(len(result["UserID"]))
+    if validate_response(result):
+        None
+
     return HttpResponse(status=HTTPStatus.OK)
+
+
+def validate_response(result):
+    try:
+        keys = result.keys()
+        if 'Token' in keys and 'UserID' in keys and 'Expiration' in keys:
+            return True
+    except Exception:
+        print("Received value had no body")
+    return False

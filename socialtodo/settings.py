@@ -20,10 +20,10 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/2.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.environ.get('SOCIAL_SECRET_KEY','r456#0--zw0+r2c8l-k)1#zafr4xlh(-4l6d)8e@%y5qrreb86')
+SECRET_KEY = os.environ.get('SOCIAL_TODO_DJANGO_SECRET_KEY','r456#0--zw0+r2c8l-k)1#zafr4xlh(-4l6d)8e@%y5qrreb86')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = bool(os.environ.get('SOCIAL_DEBUG', True))
+DEBUG = (os.environ.get('SOCIAL_TODO_DEBUG',"True") == "True")
 
 ALLOWED_HOSTS = ['ihrca.info','104.131.85.168','0.0.0.0','127.0.0.1','localhost','192.168.0.4']
 
@@ -37,6 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'social_todo'
 ]
 
 MIDDLEWARE = [
@@ -83,6 +84,10 @@ DATABASES = {
 
 # Password validation
 # https://docs.djangoproject.com/en/2.0/ref/settings/#auth-password-validators
+
+AUTH_USER_MODEL = 'social_todo.FacebookUser'
+
+AUTHENTICATION_BACKENDS = ['socialtodo.FacebookLogin']
 
 AUTH_PASSWORD_VALIDATORS = [
     {
