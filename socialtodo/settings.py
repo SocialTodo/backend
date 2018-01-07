@@ -37,7 +37,10 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'social_todo'
+    'rest_framework',
+    'rest_framework.authtoken',
+    'facebook_users',
+    'todo_lists',
 ]
 
 MIDDLEWARE = [
@@ -85,9 +88,9 @@ DATABASES = {
 # Password validation
 # https://docs.djangoproject.com/en/2.0/ref/settings/#auth-password-validators
 
-AUTH_USER_MODEL = 'social_todo.FacebookUser'
+AUTH_USER_MODEL = 'facebook_users.FacebookUser'
 
-AUTHENTICATION_BACKENDS = ['socialtodo.FacebookLogin']
+AUTHENTICATION_BACKENDS = ['facebook_users.authentication.FacebookBackend']
 
 AUTH_PASSWORD_VALIDATORS = [
     {
