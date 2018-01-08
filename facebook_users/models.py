@@ -11,7 +11,6 @@ class FacebookUser(AbstractBaseUser):
     facebook_token = models.CharField(max_length=700)
 
     USERNAME_FIELD = 'facebook_user_id'
-    REQUIRED_FIELDS = ['facebook_token']
 
     def __str__(self):
         return self.facebook_user_id

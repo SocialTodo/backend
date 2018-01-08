@@ -9,6 +9,4 @@ from django.contrib.auth import authenticate, login
 @csrf_exempt
 def authenticate_facebook_token(request):
     user = authenticate(request, token=json.loads(request.body)["Token"])
-    import pdb
-    pdb.set_trace()  # breakpoint 1ff73cd2 //
     return HttpResponse(status=200)

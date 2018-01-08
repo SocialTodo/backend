@@ -90,7 +90,7 @@ DATABASES = {
 
 AUTH_USER_MODEL = 'facebook_users.FacebookUser'
 
-AUTHENTICATION_BACKENDS = ['facebook_users.authentication.FacebookBackend']
+AUTHENTICATION_BACKENDS = ['facebook_users.authentication.CachedFacebookBackend','facebook_users.authentication.FacebookBackend']
 
 AUTH_PASSWORD_VALIDATORS = [
     {
