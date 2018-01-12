@@ -3,7 +3,7 @@ User = get_user_model()
 import json
 from django.core.exceptions import PermissionDenied
 from django.conf import settings
-from facebook_users.graph_api import authenticate_token
+from facebook_users.graph_api.query_facebook import authenticate_token, FacebookFriendFinder
 import logging
 logging.basicConfig(level=logging.DEBUG)
 
@@ -59,6 +59,7 @@ class FacebookBackend(object):
                     user.facebook_token = user_provided_token
                 elif not user.facebook_token == user_provided_token:
                     user.facebook_token == user_provided_token
+                FacebookFriendFinder(user_provided_id,user_provided_token)
                 return user
         except PermissionDenied:
             logging.debug(
