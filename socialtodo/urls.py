@@ -18,5 +18,6 @@ from django.urls import path
 from django.conf.urls import url,include
 
 urlpatterns = [
-    path('api', include('social_todo.urls'))
+    path('auth', include('facebook_users.urls')),
+#    path('api', include('todo_lists.urls')),
 ]

@@ -80,7 +80,7 @@ celerybeat-schedule
 *.sage.py
 
 # dotenv
-.env
+*.env
 
 # virtualenv
 .venv
@@ -102,3 +102,10 @@ ENV/
 
 #pycharm
 .idea/
+
+#Virutal Environment
+bin/
+lib/
+
+#The DB
+db.sqlite3
