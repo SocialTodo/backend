@@ -3,7 +3,8 @@ User = get_user_model()
 import json
 from django.core.exceptions import PermissionDenied
 from django.conf import settings
-from facebook_users.graph_api.query_facebook import authenticate_token, FacebookFriendFinder
+from django.db.utils import OperationalError
+from facebook_users.graph_api.query_facebook import authenticate_token, FacebookFriendFinder, get_user_profile
 import logging
 logging.basicConfig(level=logging.DEBUG)
 
@@ -48,18 +49,19 @@ class FacebookBackend(object):
 
     def authenticate(self, request, token=None):
         try:
-            facebook_response = self.query_facebook(token)
+            name, user_id = self.query_facebook(token)
             user_provided_token, user_provided_id = CachedFacebookBackend.parse_request(
                 self, request)
-            if facebook_response == user_provided_id:
+            if user_id == user_provided_id:
                 user, created = User.objects.get_or_create(
-                    facebook_user_id=user_provided_id)
+                    facebook_user_id=user_provided_id, name=name)
                 if created:
                     user.set_unusable_password()
                     user.facebook_token = user_provided_token
                 elif not user.facebook_token == user_provided_token:
-                    user.facebook_token == user_provided_token
-                FacebookFriendFinder(user_provided_id,user_provided_token)
+                    user.facebook_token = user_provided_token
+                user.set_friends(FacebookFriendFinder(user_provided_id,user_provided_token).get_friends())
+                user.save()
                 return user
         except PermissionDenied:
             logging.debug(
@@ -75,6 +77,9 @@ class FacebookBackend(object):
         request_successful = fb_graph_dictionary["data"]["is_valid"]
         logging.debug(
             "Facebook graph request returned {}".format(request_successful))
+
         if not request_successful:
             raise PermissionDenied
-        return fb_graph_dictionary["data"]["user_id"]
+        user_id = fb_graph_dictionary["data"]["user_id"]
+        fb_profile = get_user_profile(user_id,token)
+        return (fb_profile["name"],user_id)

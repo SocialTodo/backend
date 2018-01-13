@@ -6,6 +6,7 @@ from enum import Enum
 class QueryType(Enum):
   LOG_IN_WITH_TOKEN = 0
   GET_FRIENDS_LIST = 1
+  GET_USER_INFO = 2
 
 class FacebookQuery(object):
   def __init__(self, query_type, **kwargs):
@@ -13,6 +14,10 @@ class FacebookQuery(object):
       self.request = {"url":"https://graph.facebook.com/debug_token","parameters":kwargs}
     elif query_type == QueryType.GET_FRIENDS_LIST:
       url = "https://graph.facebook.com/{}/friends".format(kwargs["user_id"])
+      del kwargs["user_id"]
+      self.request = {"url":url, "parameters":kwargs}
+    elif query_type == QueryType.GET_USER_INFO:
+      url = "https://graph.facebook.com/{}".format(kwargs["user_id"])
       del kwargs["user_id"]
       self.request = {"url":url, "parameters":kwargs}
     else:

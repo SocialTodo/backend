@@ -65,7 +65,7 @@ class LoadFriends(TestCase):
                 2749147975847501,
                 3707558171063215,
                 4588976795742594}
-        self.assertTrue(facebook_friend_finder.get_friends() == expected)
+        self.assertTrue(facebook_friend_finder.get_friend_ids() == expected)
 
 
 class MockFacebookQuery(object):

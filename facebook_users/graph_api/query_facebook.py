@@ -1,11 +1,19 @@
 import os
 from facebook_users.graph_api.facebook_query_factory import FacebookQuery, QueryType
+from django.contrib.auth import get_user_model
+User = get_user_model()
+from django.core.exceptions import ObjectDoesNotExist
 
 def authenticate_token(token):
     facebook_query = FacebookQuery(QueryType.LOG_IN_WITH_TOKEN, input_token = token,
     access_token = os.environ["SOCIAL_TODO_APP_ID"] + "|" + os.environ["SOCIAL_TODO_APP_SECRET"])
     return facebook_query.get_json()
 
+def get_user_profile(user_id, token):
+    facebook_query = FacebookQuery(QueryType.GET_USER_INFO, input_token = token,
+    access_token = os.environ["SOCIAL_TODO_APP_ID"] + "|" + os.environ["SOCIAL_TODO_APP_SECRET"],
+    user_id = user_id)
+    return facebook_query.get_json()
 
 class FacebookFriendFinder(object):
     def __init__(self, user_id, token):
@@ -37,8 +45,17 @@ class FacebookFriendFinder(object):
         for friend in data:
             self.friends_list.add(friend["id"])
 
-    def get_friends(self):
+    def get_friend_ids(self):
         if self.finished:
             return self.friends_list
         else:
             return None
+
+    def get_friends(self):
+        friends = set()
+        for friend in self.friends_list:
+            try:
+                friends.add(User.objects.get(facebook_user_id=friend))
+            except ObjectDoesNotExist:
+                None
+        return friends
